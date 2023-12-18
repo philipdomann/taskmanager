@@ -31,9 +31,9 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateTask(Long id, Task updatedTask) {
-        Task existingTask = taskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
+    public Task updateTask(Task updatedTask) {
+        Task existingTask = taskRepository.findById(updatedTask.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + updatedTask.getId()));
 
         existingTask.setName(updatedTask.getName());
         existingTask.setDone(updatedTask.isDone());
