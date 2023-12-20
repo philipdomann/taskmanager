@@ -3,6 +3,7 @@ package com.taskmanager.backend.controller;
 import com.taskmanager.backend.model.Task;
 import com.taskmanager.backend.service.TaskService;
 import jakarta.validation.Valid;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
