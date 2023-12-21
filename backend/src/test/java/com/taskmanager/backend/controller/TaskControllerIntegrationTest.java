@@ -27,8 +27,7 @@ public class TaskControllerIntegrationTest {
 
     @Test
     void whenPostRequestWithInvalidTask_thenValidationError() throws Exception {
-        Task invalidTask = new Task();
-        invalidTask.setName("");
+        Task invalidTask = Task.builder().name("").build();
 
         ResultActions resultActions = mockMvc.perform(post("/api/tasks")
                 .accept(MediaType.APPLICATION_JSON)

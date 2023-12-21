@@ -21,11 +21,7 @@ public class TaskServiceUnitTest {
     void setUp() {
         taskRepository = mock(TaskRepository.class);
         taskService = new TaskService(taskRepository);
-
-        testTask = new Task();
-        testTask.setId(1L);
-        testTask.setName("Original Task");
-        testTask.setDone(false);
+        testTask = Task.builder().id(1L).name("Original Task").done(false).build();
     }
 
     @Test
