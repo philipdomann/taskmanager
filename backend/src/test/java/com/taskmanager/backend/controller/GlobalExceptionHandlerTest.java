@@ -1,6 +1,5 @@
 package com.taskmanager.backend.controller;
 
-import com.taskmanager.backend.model.Task;
 import com.taskmanager.backend.service.TaskUpdateConflictException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,14 +32,9 @@ public class GlobalExceptionHandlerTest {
 
     @Test
     void handleMethodArgumentNotValid() {
-        Task invalidTask = Task.builder()
-                .name("")
-                .priority(null)
-                .build();
-
-        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(invalidTask, "task");
-        bindingResult.addError(new FieldError("task", "name", "Name must not be empty."));
-        bindingResult.addError(new FieldError("task", "priority", "Priority must not be null."));
+        Object target = new Object();
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(target, "target");
+        bindingResult.addError(new FieldError("target", "field", "Validation failed"));
         MethodArgumentNotValidException ex = new MethodArgumentNotValidException(null, bindingResult);
 
         ResponseEntity<Object> response = exceptionHandler.handleMethodArgumentNotValid(ex);
