@@ -14,6 +14,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Version
+    private Long version;
+
     @NotBlank(message = "Name must not be empty.")
     @Size(min = 1, max = 200, message = "Name must be between 1 and 200 characters long.")
     private String name;

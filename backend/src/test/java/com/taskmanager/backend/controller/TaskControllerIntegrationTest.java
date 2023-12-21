@@ -40,6 +40,6 @@ public class TaskControllerIntegrationTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
                 .andExpect(jsonPath("$.timestamp").exists())
                 .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.errors").exists());
+                .andExpect(jsonPath("$.error").exists());
     }
 }
