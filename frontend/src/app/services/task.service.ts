@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export enum TaskPriority {
+  LOW = 'LOW',
+  NORMAL = 'NORMAL',
+  URGENT = 'URGENT'
+}
+
 export interface Task {
   id?: number;
   name: string;
   done: boolean;
   created: Date;
-  priority: 'LOW' | 'NORMAL' | 'URGENT';
+  priority: TaskPriority;
 }
 
 @Injectable({

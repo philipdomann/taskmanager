@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TaskService, Task } from './task.service';
+import { TaskService, Task, TaskPriority } from './task.service';
 
 describe('TaskService', () => {
   let service: TaskService;
@@ -22,8 +22,8 @@ describe('TaskService', () => {
 
   it('should retrieve all tasks', () => {
     const mockTasks: Task[] = [
-      { id: 1, name: 'Test Task 1', done: false, created: new Date(), priority: 'LOW' },
-      { id: 2, name: 'Test Task 2', done: false, created: new Date(), priority: 'URGENT' }
+      { id: 1, name: 'Test Task 1', done: false, created: new Date(), priority: TaskPriority.LOW },
+      { id: 2, name: 'Test Task 2', done: false, created: new Date(), priority: TaskPriority.URGENT }
     ];
 
     service.getTasks().subscribe(tasks => {
@@ -37,7 +37,7 @@ describe('TaskService', () => {
   });
 
   it('should add a new task', () => {
-    const newTask: Task = { name: 'New Task', done: false, created: new Date(), priority: 'NORMAL' };
+    const newTask: Task = { name: 'New Task', done: false, created: new Date(), priority: TaskPriority.NORMAL };
 
     service.addTask(newTask).subscribe(task => {
       expect(task).toEqual(jasmine.objectContaining(newTask));
@@ -61,7 +61,7 @@ describe('TaskService', () => {
   });
 
   it('should edit a task', () => {
-    const updatedTask: Task = { id: 1, name: 'Updated Task', done: true, created: new Date(), priority: 'URGENT' };
+    const updatedTask: Task = { id: 1, name: 'Updated Task', done: true, created: new Date(), priority: TaskPriority.URGENT };
 
     service.editTask(updatedTask).subscribe(task => {
       expect(task).toEqual(updatedTask);
