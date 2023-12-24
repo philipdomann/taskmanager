@@ -17,11 +17,12 @@ describe('TaskListComponent', () => {
 
     const taskServiceStub = {
       getTasks: () => of(mockTasks),
-      removeTask: (id: number) => of({})
+      removeTask: (id: number) => of({}),
+      editTask: (task: Task) => of(task)
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ TaskListComponent ],
+      imports: [ TaskListComponent ],
       providers: [ { provide: TaskService, useValue: taskServiceStub } ]
     })
       .compileComponents();
@@ -43,7 +44,11 @@ describe('TaskListComponent', () => {
   });
 
   it('should call removeTask and update task list', () => {
-    spyOn(taskService, 'removeTask').and.returnValue(of(null));
+    component.tasks = [
+      { id: 1, name: 'Task 1', done: false, created: new Date(), priority: TaskPriority.NORMAL },
+      { id: 2, name: 'Task 2', done: true, created: new Date(), priority: TaskPriority.URGENT }
+    ];
+    spyOn(taskService, 'removeTask').and.returnValue(of(undefined));
     component.removeTask(1);
     expect(taskService.removeTask).toHaveBeenCalledWith(1);
     expect(component.tasks.length).toBe(1);
@@ -59,7 +64,9 @@ describe('TaskListComponent', () => {
 
     component.editTask(updatedTask);
 
-    expect(component.tasks.find(task => task.id === 1).name).toEqual('Updated Task');
-    expect(component.tasks.find(task => task.id === 1).done).toBeTrue();
+      const task = component.tasks.find(task => task.id === 1);
+      expect(task).toBeDefined();
+      expect(task?.name).toEqual('Updated Task');
+      expect(task?.done).toBeTrue();
   });
 });
