@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from "../../environments/environment";
 
 export enum TaskPriority {
   LOW = 'LOW',
@@ -20,9 +21,10 @@ export interface Task {
   providedIn: 'root'
 })
 export class TaskService {
-  private _apiUrl = 'http://your-api-url/api/tasks';
+  private _apiUrl = environment.apiUrl + '/tasks';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this._apiUrl);
