@@ -1,0 +1,12 @@
+<div>
+  <h2>Add New Task</h2>
+  <form (ngSubmit)="addTask(name.value, priority.value)" #taskForm="ngForm">
+    <input type="text" name="name" ngModel required>
+    <select name="priority" ngModel required>
+      <option value="LOW">Low</option>
+      <option value="NORMAL">Normal</option>
+      <option value="URGENT">Urgent</option>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+</div>
