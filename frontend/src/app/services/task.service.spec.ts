@@ -17,6 +17,8 @@ describe('TaskService', () => {
   });
 
   it('should be created', () => {
+    const req = httpTestingController.expectOne(service.apiUrl);
+    req.flush([]);
     expect(service).toBeTruthy();
   });
 

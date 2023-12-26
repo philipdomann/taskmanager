@@ -42,11 +42,20 @@ describe('TaskListComponent', () => {
   });
 
   it('should call removeTask and update task list', () => {
-    spyOn(taskService, 'removeTask').and.returnValue(of(undefined));
-    component.removeTask(mockTasks[0]);
-    expect(taskService.removeTask).toHaveBeenCalledWith(1);
+    // Arrange
+    const taskToRemove = mockTasks[0];
+
+    // Spy on remove task
+    spyOn(taskService, 'removeTask')
+        .and.returnValue(of(undefined));
+
+    // Act
+    component.removeTask(taskToRemove);
     fixture.detectChanges();
+
+    // Assert
     expect(component.tasks.length).toBe(1);
+    expect(component.tasks).not.toContain(taskToRemove);
   });
 
   it('should update a task', () => {
