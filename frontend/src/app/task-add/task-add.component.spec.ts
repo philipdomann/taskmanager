@@ -45,6 +45,6 @@ describe('TaskAddComponent', () => {
     expect(actualArgs.name).toEqual(newTask.name);
     expect(actualArgs.priority).toEqual(newTask.priority);
     expect(actualArgs.done).toEqual(newTask.done);
-    expect(actualArgs.created).toEqual(currentDate);
+    expect(actualArgs.created.getTime()).toEqual(currentDate.getTime());
   });
 });

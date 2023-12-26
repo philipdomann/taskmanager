@@ -1,35 +1,43 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TaskListComponent } from './task-list.component';
-import { of } from 'rxjs';
-import { TaskPriority, TaskService, Task } from "../services/task.service";
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TaskListComponent} from './task-list.component';
+import {BehaviorSubject, of} from 'rxjs';
+import {Task, TaskPriority, TaskService} from "../services/task.service";
+import {tap} from "rxjs/operators";
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
   let fixture: ComponentFixture<TaskListComponent>;
   let taskService: TaskService;
   let mockTasks: Task[];
+  let tasksSubject: BehaviorSubject<Task[]>;
 
   beforeEach(async () => {
     mockTasks = [
       { id: 1, name: 'Task 1', done: false, created: new Date(), priority: TaskPriority.NORMAL },
       { id: 2, name: 'Task 2', done: true, created: new Date(), priority: TaskPriority.URGENT }
     ];
+    tasksSubject = new BehaviorSubject(mockTasks);
 
     const taskServiceStub = {
-      tasks$: of(mockTasks),
-      removeTask: (id: number) => of({}),
+      tasks$: tasksSubject.asObservable(),
+      removeTask: (id: number) => of({}).pipe(
+        tap(() => {
+          mockTasks = mockTasks.filter(task => task.id !== id);
+          tasksSubject.next(mockTasks);
+        })
+      ),
       editTask: (task: Task) => of(task)
     };
 
     await TestBed.configureTestingModule({
       imports: [ TaskListComponent ],
       providers: [ { provide: TaskService, useValue: taskServiceStub } ]
-    })
-        .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
     taskService = TestBed.inject(TaskService);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -37,7 +45,6 @@ describe('TaskListComponent', () => {
   });
 
   it('should load tasks on init', () => {
-    fixture.detectChanges(); // ngOnInit() gets called here
     expect(component.tasks.length).toBe(2);
   });
 
@@ -45,15 +52,16 @@ describe('TaskListComponent', () => {
     // Arrange
     const taskToRemove = mockTasks[0];
 
-    // Spy on remove task
-    spyOn(taskService, 'removeTask')
-        .and.returnValue(of(undefined));
+    // Spy on removeTask method
+    spyOn(taskService, 'removeTask').and.callThrough();
 
     // Act
     component.removeTask(taskToRemove);
-    fixture.detectChanges();
 
     // Assert
+    if (taskToRemove.id !== undefined) {
+      expect(taskService.removeTask).toHaveBeenCalledWith(taskToRemove.id);
+    }
     expect(component.tasks.length).toBe(1);
     expect(component.tasks).not.toContain(taskToRemove);
   });
