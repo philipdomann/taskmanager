@@ -1,10 +1,4 @@
 .task-list-container {
-  max-width: 600px;
-  margin: auto;
-
-  @media (max-width: 600px) {
-    max-width: 100%;
-  }
   .task-list {
     list-style: none;
     padding: 0;
@@ -13,6 +7,27 @@
       display: flex;
       align-items: center;
       margin-bottom: 10px;
+
+      .edit-task-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-grow: 1;
+
+        .task-input {
+          flex-grow: 1;
+        }
+
+        .task-select {
+          flex-basis: 150px;
+        }
+
+        .task-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+      }
 
       .task-name {
         flex-grow: 1;
@@ -24,6 +39,12 @@
 
       button {
         margin-left: 5px;
+      }
+
+      .task-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
     }
   }

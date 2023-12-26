@@ -1,7 +1,15 @@
-.header {
-  .logo {
-    max-width: 100px;
-    margin: 10px;
+#app {
+  max-width: 600px;
+  margin: auto;
+
+  @media (max-width: 600px) {
+    max-width: 98%;
+  }
+  #header {
+    text-align: center;
+  }
+  #content {
+    margin-top: 20px;
   }
 }
 
