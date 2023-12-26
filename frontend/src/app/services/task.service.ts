@@ -45,4 +45,8 @@ export class TaskService {
   get apiUrl(): string {
     return this._apiUrl;
   }
+
+  getTaskPriorities(): string[] {
+    return Object.values(TaskPriority);
+  }
 }

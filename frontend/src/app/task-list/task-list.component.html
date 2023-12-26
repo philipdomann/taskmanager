@@ -1,10 +1,23 @@
-<div>
-  <h2>Task List</h2>
-  <ul>
-    <li *ngFor="let task of tasks">
-      {{ task.name }} - {{ task.priority }}
-      <button (click)="editTask(task)">Edit</button>
-      <button (click)="removeTask(task.id)">Delete</button>
+<div class="task-list-container">
+  <ul class="task-list">
+    <li *ngFor="let task of tasks" class="task-item">
+      <ng-container *ngIf="editingTaskId === task.id; else viewMode">
+        <div *ngIf="editedTask">
+          <input type="text" [(ngModel)]="editedTask.name" class="form-control">
+          <select [(ngModel)]="editedTask.priority" class="form-select">
+            <option *ngFor="let priority of taskService.getTaskPriorities()"
+                    [value]="priority">{{ priority }}</option>
+          </select>
+          <button class="btn btn-success" (click)="saveEdit()">Save</button>
+          <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </ng-container>
+      <ng-template #viewMode>
+        <span class="task-name">{{ task.name }}</span>
+        <span class="task-priority">{{ task.priority }}</span>
+        <button class="btn btn-primary" (click)="startEdit(task)">Edit</button>
+        <button class="btn btn-danger" (click)="removeTask(task)">Delete</button>
+      </ng-template>
     </li>
   </ul>
 </div>
