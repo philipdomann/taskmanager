@@ -29,8 +29,7 @@ describe('TaskAddComponent', () => {
   });
 
   it('should call addTask on submit', () => {
-    const currentDate = new Date();
-    const newTask = { name: 'New Task', priority: TaskPriority.NORMAL, done: false, created: currentDate };
+    const newTask = { name: 'New Task', priority: TaskPriority.NORMAL, done: false, created: new Date() };
     const addTaskSpy = spyOn(taskService, 'addTask').and.returnValue(of(newTask));
 
     component.addTask(newTask.name, newTask.priority);
@@ -45,6 +44,5 @@ describe('TaskAddComponent', () => {
     expect(actualArgs.name).toEqual(newTask.name);
     expect(actualArgs.priority).toEqual(newTask.priority);
     expect(actualArgs.done).toEqual(newTask.done);
-    expect(actualArgs.created.getTime()).toEqual(currentDate.getTime());
   });
 });

@@ -1,50 +1,32 @@
 .task-list-container {
   .task-list {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 
     .task-item {
       display: flex;
       align-items: center;
+      gap: 10px;
       margin-bottom: 10px;
 
-      .edit-task-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-grow: 1;
-
-        .task-input {
-          flex-grow: 1;
-        }
-
-        .task-select {
-          flex-basis: 150px;
-        }
-
-        .task-actions {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-      }
-
-      .task-name {
-        flex-grow: 1;
-      }
-
-      .task-priority {
+      .task-checkbox {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 20px;
+        transform: scale(1.5);
         margin-right: 10px;
       }
 
-      button {
-        margin-left: 5px;
+      .task-input, .task-select {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0;
       }
 
-      .task-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+      .btn {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: auto;
       }
     }
   }

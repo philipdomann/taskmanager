@@ -12,8 +12,6 @@ import {FormsModule} from "@angular/forms";
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
-  editingTaskId: number | null = null;
-  editedTask: Task | null = null;
 
   constructor(public taskService: TaskService) {}
 
@@ -27,28 +25,15 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  startEdit(task: Task) {
-    if (typeof task.id !== 'undefined'){
-      this.editingTaskId = task.id;
-      this.editedTask = { ...task, name: task.name || '', priority: task.priority || 'LOW' };
-    }
-  }
-
-  saveEdit() {
-    if (this.editedTask && this.editingTaskId) {
-      this.taskService.editTask(this.editedTask).subscribe(updatedTask => {
+  saveTask(task: Task) {
+    if (task.id) {
+      this.taskService.editTask(task).subscribe(updatedTask => {
         const index = this.tasks.findIndex(t => t.id === updatedTask.id);
         if (index !== -1) {
           this.tasks[index] = updatedTask;
         }
-        this.cancelEdit();
       });
     }
-  }
-
-  cancelEdit() {
-    this.editingTaskId = null;
-    this.editedTask = null;
   }
 
   removeTask(task: Task) {

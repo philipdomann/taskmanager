@@ -26,7 +26,12 @@ describe('TaskListComponent', () => {
           tasksSubject.next(mockTasks);
         })
       ),
-      editTask: (task: Task) => of(task)
+      editTask: (task: Task) => of(task),
+      getTaskPriorities: () => [
+        TaskPriority.LOW,
+        TaskPriority.NORMAL,
+        TaskPriority.URGENT
+      ]
     };
 
     await TestBed.configureTestingModule({
@@ -49,16 +54,11 @@ describe('TaskListComponent', () => {
   });
 
   it('should call removeTask and update task list', () => {
-    // Arrange
     const taskToRemove = mockTasks[0];
-
-    // Spy on removeTask method
     spyOn(taskService, 'removeTask').and.callThrough();
 
-    // Act
     component.removeTask(taskToRemove);
 
-    // Assert
     if (taskToRemove.id !== undefined) {
       expect(taskService.removeTask).toHaveBeenCalledWith(taskToRemove.id);
     }
@@ -69,10 +69,9 @@ describe('TaskListComponent', () => {
   it('should update a task', () => {
     const updatedTask: Task = { id: 1, name: 'Updated Task', done: true, created: new Date(), priority: TaskPriority.NORMAL };
     spyOn(taskService, 'editTask').and.returnValue(of(updatedTask));
-    component.startEdit(mockTasks[0]);
-    component.editedTask = updatedTask;
-    component.saveEdit();
-    fixture.detectChanges();
+
+    component.saveTask(updatedTask);
+
     const task = component.tasks.find(task => task.id === 1);
     expect(task).toBeDefined();
     expect(task?.name).toEqual('Updated Task');
