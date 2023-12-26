@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaskListComponent } from './task-list.component';
 import { of } from 'rxjs';
-import {TaskPriority, TaskService, Task} from "../services/task.service";
+import { TaskPriority, TaskService, Task } from "../services/task.service";
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -16,7 +16,7 @@ describe('TaskListComponent', () => {
     ];
 
     const taskServiceStub = {
-      getTasks: () => of(mockTasks),
+      tasks$: of(mockTasks),
       removeTask: (id: number) => of({}),
       editTask: (task: Task) => of(task)
     };
@@ -25,7 +25,7 @@ describe('TaskListComponent', () => {
       imports: [ TaskListComponent ],
       providers: [ { provide: TaskService, useValue: taskServiceStub } ]
     })
-      .compileComponents();
+        .compileComponents();
 
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
@@ -37,36 +37,28 @@ describe('TaskListComponent', () => {
   });
 
   it('should load tasks on init', () => {
-    spyOn(taskService, 'getTasks').and.callThrough();
     fixture.detectChanges(); // ngOnInit() gets called here
-    expect(taskService.getTasks).toHaveBeenCalled();
     expect(component.tasks.length).toBe(2);
   });
 
   it('should call removeTask and update task list', () => {
-    component.tasks = [
-      { id: 1, name: 'Task 1', done: false, created: new Date(), priority: TaskPriority.NORMAL },
-      { id: 2, name: 'Task 2', done: true, created: new Date(), priority: TaskPriority.URGENT }
-    ];
     spyOn(taskService, 'removeTask').and.returnValue(of(undefined));
-    component.removeTask(1);
+    component.removeTask(mockTasks[0]);
     expect(taskService.removeTask).toHaveBeenCalledWith(1);
+    fixture.detectChanges();
     expect(component.tasks.length).toBe(1);
   });
 
   it('should update a task', () => {
     const updatedTask: Task = { id: 1, name: 'Updated Task', done: true, created: new Date(), priority: TaskPriority.NORMAL };
     spyOn(taskService, 'editTask').and.returnValue(of(updatedTask));
-    component.tasks = [
-      { id: 1, name: 'Task 1', done: false, created: new Date(), priority: TaskPriority.NORMAL },
-      { id: 2, name: 'Task 2', done: true, created: new Date(), priority: TaskPriority.URGENT }
-    ];
-
-    component.editTask(updatedTask);
-
-      const task = component.tasks.find(task => task.id === 1);
-      expect(task).toBeDefined();
-      expect(task?.name).toEqual('Updated Task');
-      expect(task?.done).toBeTrue();
+    component.startEdit(mockTasks[0]);
+    component.editedTask = updatedTask;
+    component.saveEdit();
+    fixture.detectChanges();
+    const task = component.tasks.find(task => task.id === 1);
+    expect(task).toBeDefined();
+    expect(task?.name).toEqual('Updated Task');
+    expect(task?.done).toBeTrue();
   });
 });
