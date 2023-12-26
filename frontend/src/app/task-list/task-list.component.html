@@ -12,8 +12,12 @@
                                 [value]="priority">{{ priority }}</option>
                     </select>
                     <div class="task-actions">
-                        <button class="btn btn-success" (click)="saveEdit()">Save</button>
-                        <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+                        <button class="btn btn-success" (click)="saveEdit()">
+                            <i class="bi bi-save"></i>
+                        </button>
+                        <button class="btn btn-secondary" (click)="cancelEdit()">
+                            <i class="bi bi-x"></i>
+                        </button>
                     </div>
                 </div>
             </ng-container>
@@ -21,8 +25,12 @@
                 <span class="task-name">{{ task.name }}</span>
                 <span class="task-priority">{{ task.priority }}</span>
                 <div class="task-actions">
-                    <button class="btn btn-primary" (click)="startEdit(task)">Edit</button>
-                    <button class="btn btn-danger" (click)="removeTask(task)">Delete</button>
+                    <button class="btn btn-primary" (click)="startEdit(task)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="removeTask(task)">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>
             </ng-template>
         </li>
