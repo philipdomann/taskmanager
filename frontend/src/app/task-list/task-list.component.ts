@@ -22,8 +22,8 @@ export class TaskListComponent implements OnInit {
   }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe((data: Task[]) => {
-      this.tasks = data;
+    this.taskService.tasks$.subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
     });
   }
 

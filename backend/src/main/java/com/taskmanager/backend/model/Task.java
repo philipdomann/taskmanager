@@ -42,6 +42,6 @@ public class Task {
 
     // Enum for Priority
     public enum Priority {
-        LOW, MEDIUM, HIGH
+        LOW, NORMAL, URGENT
     }
 }

@@ -19,7 +19,7 @@ public class TaskServiceIntegrationTest {
 
     @Test
     void testOptimisticLocking() {
-        Task task = Task.builder().name("Initial Task").priority(Task.Priority.MEDIUM).build();
+        Task task = Task.builder().name("Initial Task").priority(Task.Priority.LOW).build();
         task = taskRepository.save(task);
 
         Task taskTx1 = taskRepository.findById(task.getId())

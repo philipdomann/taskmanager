@@ -47,7 +47,7 @@ public class TaskControllerMvcTest {
 
     @Test
     void postTask_WithValidData_ShouldCreateTaskAndReturnOk() throws Exception {
-        Task validTask = Task.builder().name("Valid Task Name").priority(Task.Priority.MEDIUM).build();
+        Task validTask = Task.builder().name("Valid Task Name").priority(Task.Priority.LOW).build();
         when(taskService.createTask(any(Task.class))).thenReturn(validTask);
 
         mockMvc.perform(post("/api/tasks")
@@ -55,7 +55,7 @@ public class TaskControllerMvcTest {
                         .content(objectMapper.writeValueAsString(validTask)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Valid Task Name"))
-                .andExpect(jsonPath("$.priority").value(Task.Priority.MEDIUM.toString()));
+                .andExpect(jsonPath("$.priority").value(Task.Priority.LOW.toString()));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class TaskControllerMvcTest {
 
     @Test
     void postTask_WithEmptyName_ShouldReturnBadRequest() throws Exception {
-        Task taskWithEmptyName = Task.builder().name("").priority(Task.Priority.MEDIUM).build();
+        Task taskWithEmptyName = Task.builder().name("").priority(Task.Priority.LOW).build();
 
         mockMvc.perform(post("/api/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class TaskControllerMvcTest {
 
     @Test
     void postTask_WithTooLongName_thenValidationError() throws Exception {
-        Task taskWithLongName = Task.builder().name("a".repeat(201)).priority(Task.Priority.MEDIUM).build();
+        Task taskWithLongName = Task.builder().name("a".repeat(201)).priority(Task.Priority.LOW).build();
 
         mockMvc.perform(post("/api/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,7 @@ public class TaskControllerMvcTest {
 
     @Test
     void putTask_WithValidData_ShouldUpdateTaskAndReturnOk() throws Exception {
-        Task validTask = Task.builder().id(1L).name("Valid Task Name").priority(Task.Priority.MEDIUM).build();
+        Task validTask = Task.builder().id(1L).name("Valid Task Name").priority(Task.Priority.LOW).build();
         when(taskService.updateTask(any(Task.class))).thenReturn(validTask);
 
         mockMvc.perform(put("/api/tasks/1")
@@ -102,13 +102,13 @@ public class TaskControllerMvcTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(validTask.getId()))
                 .andExpect(jsonPath("$.name").value("Valid Task Name"))
-                .andExpect(jsonPath("$.priority").value(Task.Priority.MEDIUM.toString()));
+                .andExpect(jsonPath("$.priority").value(Task.Priority.LOW.toString()));
     }
 
 
     @Test
     void putTask_WithEmptyName_thenValidationError() throws Exception {
-        Task taskWithEmptyName = Task.builder().id(1L).name("").priority(Task.Priority.MEDIUM).build();
+        Task taskWithEmptyName = Task.builder().id(1L).name("").priority(Task.Priority.LOW).build();
 
         mockMvc.perform(put("/api/tasks/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ public class TaskControllerMvcTest {
 
     @Test
     void putTask_WithTooLongName_thenValidationError() throws Exception {
-        Task taskWithLongName = Task.builder().id(1L).name("a".repeat(201)).priority(Task.Priority.MEDIUM).build();
+        Task taskWithLongName = Task.builder().id(1L).name("a".repeat(201)).priority(Task.Priority.LOW).build();
 
         mockMvc.perform(put("/api/tasks/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -141,14 +141,14 @@ public class TaskControllerMvcTest {
 
     @Test
     void getTask_ExistingTask_thenRetrieveTask() throws Exception {
-        Task existingTask = Task.builder().id(1L).name("Existing Task").priority(Task.Priority.MEDIUM).build();
+        Task existingTask = Task.builder().id(1L).name("Existing Task").priority(Task.Priority.LOW).build();
         when(taskService.getTask(existingTask.getId())).thenReturn(Optional.of(existingTask));
 
         mockMvc.perform(get("/api/tasks/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(existingTask.getId()))
                 .andExpect(jsonPath("$.name").value("Existing Task"))
-                .andExpect(jsonPath("$.priority").value(Task.Priority.MEDIUM.toString()));
+                .andExpect(jsonPath("$.priority").value(Task.Priority.LOW.toString()));
     }
 
     @Test

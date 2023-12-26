@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
+import {tap} from "rxjs/operators";
 
 export enum TaskPriority {
   LOW = 'LOW',
@@ -22,24 +23,49 @@ export interface Task {
 })
 export class TaskService {
   private _apiUrl = environment.apiUrl + '/tasks';
+  private _tasks = new BehaviorSubject<Task[]>([]);
 
   constructor(private http: HttpClient) {
+    this.loadInitialTasks();
   }
 
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this._apiUrl);
+  private loadInitialTasks() {
+    this.http.get<Task[]>(this._apiUrl).subscribe(tasks => {
+      this._tasks.next(tasks);
+    });
+  }
+
+  get tasks$(): Observable<Task[]> {
+    return this._tasks.asObservable();
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this._apiUrl, task);
-  }
-
-  removeTask(taskId: number): Observable<void> {
-    return this.http.delete<void>(`${this._apiUrl}/${taskId}`);
+    return this.http.post<Task>(this._apiUrl, task).pipe(
+        tap(newTask => {
+          const currentTasks = this._tasks.value;
+          this._tasks.next([...currentTasks, newTask]);
+        })
+    );
   }
 
   editTask(task: Task): Observable<Task> {
-    return this.http.put<Task>(`${this._apiUrl}/${task.id}`, task);
+    return this.http.put<Task>(`${this._apiUrl}/${task.id}`, task).pipe(
+        tap(updatedTask => {
+          const currentTasks = this._tasks.value;
+          const taskIndex = currentTasks.findIndex(t => t.id === updatedTask.id);
+          currentTasks[taskIndex] = updatedTask;
+          this._tasks.next(currentTasks);
+        })
+    );
+  }
+
+  removeTask(taskId: number): Observable<void> {
+    return this.http.delete<void>(`${this._apiUrl}/${taskId}`).pipe(
+        tap(() => {
+          const currentTasks = this._tasks.value.filter(task => task.id !== taskId);
+          this._tasks.next(currentTasks);
+        })
+    );
   }
 
   get apiUrl(): string {
