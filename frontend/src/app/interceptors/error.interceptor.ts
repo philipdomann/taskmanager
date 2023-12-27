@@ -14,13 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log('Incoming HTTP response', event);
       }),
       catchError(error => {
-        if (error instanceof HttpErrorResponse) {
-          // Handle HTTP errors
           return this.errorHandlerService.handleError(error);
-        } else {
-          // Handle non-HTTP errors
-          return this.errorHandlerService.handleError(new Error(error.message));
-        }
       })
     );
   }

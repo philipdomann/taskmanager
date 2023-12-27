@@ -11,7 +11,12 @@ describe('TaskAddComponent', () => {
 
   beforeEach(async () => {
     const taskServiceStub = {
-      addTask: (task: any) => of(task)
+      addTask: (task: any) => of(task),
+      getTaskPriorities: () => [
+        TaskPriority.LOW,
+        TaskPriority.NORMAL,
+        TaskPriority.URGENT
+      ]
     };
 
     await TestBed.configureTestingModule({
@@ -26,6 +31,16 @@ describe('TaskAddComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize priorities on ngOnInit', () => {
+    const expectedPriorities = ['LOW', 'NORMAL', 'URGENT'];
+    const getTaskPrioritiesSpy = spyOn(taskService, 'getTaskPriorities').and.returnValue(expectedPriorities);
+
+    component.ngOnInit();
+
+    expect(getTaskPrioritiesSpy).toHaveBeenCalled();
+    expect(component.priorities).toEqual(expectedPriorities);
   });
 
   it('should call addTask on submit', () => {
