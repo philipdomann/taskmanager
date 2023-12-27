@@ -27,10 +27,10 @@ public class TaskServiceUnitTest {
     @Test
     void updateTask_ShouldUpdateProperties() {
         when(taskRepository.findById(testTask.getId())).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
 
         Task result = taskService.updateTask(testTask);
 
-        assertNotNull(result);
         assertEquals(testTask.getName(), result.getName());
         assertEquals(testTask.isDone(), result.isDone());
         verify(taskRepository).findById(testTask.getId());
