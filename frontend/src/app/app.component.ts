@@ -12,5 +12,5 @@ import {TaskListComponent} from "./task-list/task-list.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'taskmanager';
 }
