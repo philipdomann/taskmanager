@@ -3,10 +3,11 @@ import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent} from '@angular/com
 import {catchError, tap} from 'rxjs/operators';
 import { ErrorHandlerService } from "../services/error-handler.service";
 import {Observable} from "rxjs";
+import {AlertService} from "../services/alert.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private errorHandlerService: ErrorHandlerService) {}
+  constructor(private errorHandlerService: ErrorHandlerService, private alertService: AlertService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('Outgoing HTTP request', req);
@@ -15,6 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log('Incoming HTTP response', event);
       }),
       catchError(error => {
+          this.alertService.showError("Server is not reachable.");
           return this.errorHandlerService.handleError(error);
       })
     );
