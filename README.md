@@ -89,3 +89,28 @@ To run tests within the Spring Boot application:
 
 After firing up both the backend and frontend services, access the web application via a web browser by visiting: [http://localhost:4200](http://localhost:4200)
 
+## Screenshots
+
+- Screenshot App:
+
+![image](https://github.com/philipdomann/taskmanager/assets/1313090/287ac8cd-b946-435d-a46a-473d567cadd3)
+
+
+- Angular Code Coverage Report:
+
+![image](https://github.com/philipdomann/taskmanager/assets/1313090/cd7204ca-7c7b-4a17-a3f9-8c80f5aab99c)
+
+
+- Spring Code Coverage:
+
+![image](https://github.com/philipdomann/taskmanager/assets/1313090/e1fd39c7-3b4a-4d45-9f5e-f3c74359de73)
+
+
+- Asana Todos Done:
+
+![image](https://github.com/philipdomann/taskmanager/assets/1313090/aae46fd0-b780-46ad-8901-d162431942af)
+
+
+- Asana Totos Possible To Do's:
+
+![image](https://github.com/philipdomann/taskmanager/assets/1313090/8d915328-5e15-483c-9d3f-89a54d8e4d5c)
